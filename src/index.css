@@ -1,0 +1,322 @@
+:root {
+  --bg-color: #0f172a;
+  --panel-bg: rgba(30, 41, 59, 0.7);
+  --border-color: rgba(148, 163, 184, 0.2);
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --accent-blue: #38bdf8;
+  --accent-green: #34d399;
+  --accent-purple: #a78bfa;
+  --accent-pink: #f472b6;
+  
+  --bus-idle: #334155;
+  --bus-active-address: var(--accent-purple);
+  --bus-active-data: var(--accent-green);
+  --bus-active-result: var(--accent-pink);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app-container {
+  display: flex;
+  width: 1200px;
+  height: 700px;
+  background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+  border-radius: 16px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 350px;
+  background: var(--panel-bg);
+  backdrop-filter: blur(10px);
+  border-right: 1px solid var(--border-color);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sidebar-header h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  background: linear-gradient(to right, var(--accent-blue), var(--accent-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+code {
+  background: rgba(0,0,0,0.3);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-family: monospace;
+  color: var(--accent-green);
+  font-size: 1.1rem;
+}
+
+.status-panel {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 16px;
+  border: 1px solid var(--border-color);
+}
+
+.status-panel h2 {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.phase-indicator {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-weight: 600;
+  color: var(--accent-blue);
+}
+
+.explanation {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+}
+
+button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  background: var(--accent-blue);
+  color: #0f172a;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.4);
+}
+
+button:disabled {
+  background: var(--bus-idle);
+  color: var(--text-secondary);
+  cursor: not-allowed;
+}
+
+.btn-reset {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+}
+.btn-reset:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.theory-note {
+  background: rgba(244, 114, 182, 0.1);
+  border-left: 4px solid var(--accent-pink);
+  padding: 12px;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.85rem;
+}
+
+.theory-note h3 {
+  color: var(--accent-pink);
+  margin-bottom: 4px;
+  font-size: 0.9rem;
+}
+
+/* Diagram Area */
+.diagram-area {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.diagram-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 600px;
+}
+
+/* SVG Buses */
+.buses-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+polyline {
+  fill: none;
+  stroke: var(--bus-idle);
+  stroke-width: 4;
+  stroke-linejoin: round;
+  transition: stroke 0.3s;
+}
+
+.bus-label {
+  fill: var(--text-secondary);
+  font-size: 12px;
+  font-family: monospace;
+}
+
+/* Components */
+.component {
+  position: absolute;
+  background: rgba(30, 41, 59, 0.8);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 12px;
+  z-index: 2;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.component.active {
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+}
+
+.comp-title {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.value {
+  font-family: monospace;
+  font-size: 1.2rem;
+  color: var(--accent-green);
+  background: rgba(0,0,0,0.5);
+  padding: 4px 8px;
+  border-radius: 4px;
+  letter-spacing: 2px;
+}
+
+.value-split {
+  display: flex;
+  gap: 8px;
+  font-family: monospace;
+  font-size: 1.2rem;
+  background: rgba(0,0,0,0.5);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.val-ir-op { color: var(--accent-blue); }
+.val-ir-addr { color: var(--accent-purple); }
+
+.alu-op {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--accent-pink);
+}
+
+/* Memory Table */
+.mem-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: monospace;
+  font-size: 0.9rem;
+  margin-top: 10px;
+}
+
+.mem-table th {
+  color: var(--text-secondary);
+  text-align: left;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.mem-table td {
+  padding: 6px 0;
+}
+
+.mem-table tr.active td {
+  color: var(--accent-green);
+  font-weight: bold;
+}
+
+.mem-table tr.reading td {
+  color: var(--accent-purple);
+  font-weight: bold;
+}
+
+/* Animations */
+.data-packet {
+  stroke-dasharray: 10 10;
+  animation: flow 1s linear infinite;
+  stroke-width: 6;
+}
+
+.glow-address {
+  stroke: var(--bus-active-address);
+  filter: drop-shadow(0 0 5px var(--bus-active-address));
+}
+
+.glow-data {
+  stroke: var(--bus-active-data);
+  filter: drop-shadow(0 0 5px var(--bus-active-data));
+}
+
+.glow-result {
+  stroke: var(--bus-active-result);
+  filter: drop-shadow(0 0 5px var(--bus-active-result));
+}
+
+@keyframes flow {
+  from {
+      stroke-dashoffset: 20;
+  }
+  to {
+      stroke-dashoffset: 0;
+  }
+}

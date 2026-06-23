@@ -1,0 +1,58 @@
+.topic-card {
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border-left: 2px solid transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.topic-card:hover {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 8px 32px rgba(0, 240, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.topic-card.active {
+  border-left: 2px solid var(--neon-green);
+  background: rgba(0, 255, 65, 0.05);
+}
+
+.topic-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.topic-card h3 {
+  color: #fff;
+  font-size: 1.2rem;
+}
+
+.status-badge {
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  color: var(--text-muted);
+}
+
+.topic-card-desc {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.topic-card-action {
+  margin-top: auto;
+}
+
+.action-text {
+  font-family: var(--font-mono);
+  color: var(--neon-green);
+  font-size: 0.85rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
